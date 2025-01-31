@@ -1,16 +1,17 @@
-name: Open URL Every Minute (Loop)
+name: Open URL Every Minute (Debug Mode)
 
 on:
-  workflow_dispatch:  # Allows manual start
+  schedule:
+    - cron: '*/1 * * * *'  # Run every 1 minute
+  workflow_dispatch:  # Allow manual start
 
 jobs:
   open_url:
     runs-on: ubuntu-latest
     steps:
-      - name: Keep Sending Requests in a Loop
+      - name: Send Request and Show Response
         run: |
-          while true; do
-            curl -X GET "https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769"
-            echo "Waiting 1 minute before next request..."
-            sleep 60
-          done
+          response=$(curl -s -o response.txt -w "%{http_code}" "https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
+          echo "HTTP Status Code: $response"
+          echo "Response Body:"
+          cat response.txt
