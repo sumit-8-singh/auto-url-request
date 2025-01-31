@@ -22,6 +22,7 @@ jobs:
       - name: Run Selenium Script in a Loop
         run: |
           echo "Starting infinite loop to open URL every 1 minute..."
+          cd $GITHUB_WORKSPACE  # Ensure you're in the correct directory (root directory of the repo)
           while true; do
             python open_url.py  # Run the Python script
             echo "Waiting 1 minute before the next request..."
