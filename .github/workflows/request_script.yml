@@ -1,15 +1,16 @@
-name: Open URL Every Minute
+name: Open URL Every Minute (Loop)
 
 on:
-  schedule:
-    - cron: '*/1 * * * *'  # Runs every 1 minute
   workflow_dispatch:  # Allows manual start
 
 jobs:
   open_url:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Send Request
+      - name: Keep Sending Requests in a Loop
         run: |
-          curl -X GET "https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769"
+          while true; do
+            curl -X GET "https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769"
+            echo "Waiting 1 minute before next request..."
+            sleep 60
+          done
