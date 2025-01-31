@@ -1,17 +1,18 @@
-name: Open URL Every Minute (Debug Mode)
+name: Open URL in Loop
 
 on:
-  schedule:
-    - cron: '*/1 * * * *'  # Run every 1 minute
-  workflow_dispatch:  # Allow manual start
+  workflow_dispatch:  # Allows manual start
 
 jobs:
   open_url:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Request and Show Response
+      - name: Send Request in Loop
         run: |
-          response=$(curl -s -o response.txt -w "%{http_code}" "https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
-          echo "HTTP Status Code: $response"
-          echo "Response Body:"
-          cat response.txt
+          for i in {1..720}; do  # Loop for 12 hours (720 minutes)
+            curl -s -o response.txt -w "%{http_code}" -H "User-Agent: Mozilla/5.0" \
+              "https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769"
+            echo "Request sent. Waiting 1 minute..."
+            sleep 60  # Wait 1 minute before next request
+          done
+
