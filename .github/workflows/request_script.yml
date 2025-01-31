@@ -1,30 +1,31 @@
-name: Open URL in Chrome (Loop)
+name: Open URL in Chrome
 
 on:
-  workflow_dispatch:  # Allows manual start
+  schedule:
+    - cron: '*/1 * * * *'  # Run every minute
+  workflow_dispatch:  # Allows manual start as well
 
 jobs:
   open_url:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Install Chrome & Dependencies
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y wget unzip xvfb
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt -f install -y
-          google-chrome --version
-
-      - name: Install Python & Selenium
-        run: |
           pip install selenium webdriver-manager
 
-      - name: Run Selenium Script in a Loop
+      - name: Run Selenium Script
         run: |
-          echo "Starting infinite loop to open URL every 1 minute..."
-          cd $GITHUB_WORKSPACE  # Ensure you're in the correct directory (root directory of the repo)
-          while true; do
-            python open_url.py  # Run the Python script
-            echo "Waiting 1 minute before the next request..."
-            sleep 60  # Wait 1 minute before the next request
-          done
+          python3 open_url.py
