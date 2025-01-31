@@ -1,4 +1,4 @@
-name: Open URL in Chrome
+name: Open URL in Chrome (Loop)
 
 on:
   workflow_dispatch:  # Allows manual start
@@ -19,22 +19,27 @@ jobs:
         run: |
           pip install selenium webdriver-manager
 
-      - name: Run Selenium Script
+      - name: Run Selenium Script in a Loop
         run: |
-          echo "Opening URL in Chrome..."
-          python - <<EOF
-          from selenium import webdriver
-          from selenium.webdriver.chrome.service import Service
-          from webdriver_manager.chrome import ChromeDriverManager
+          echo "Starting infinite loop to open URL every 1 minute..."
+          while true; do
+            python - <<EOF
+            from selenium import webdriver
+            from selenium.webdriver.chrome.service import Service
+            from webdriver_manager.chrome import ChromeDriverManager
+            import time
 
-          options = webdriver.ChromeOptions()
-          options.add_argument("--headless")  # Run without UI
-          options.add_argument("--no-sandbox")
-          options.add_argument("--disable-dev-shm-usage")
+            options = webdriver.ChromeOptions()
+            options.add_argument("--headless")  # Run without UI
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
 
-          service = Service(ChromeDriverManager().install())
-          driver = webdriver.Chrome(service=service, options=options)
-          driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
-          print("Page opened successfully!")
-          driver.quit()
-          EOF
+            service = Service(ChromeDriverManager().install())
+            driver = webdriver.Chrome(service=service, options=options)
+            driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
+            print("Page opened successfully!")
+            driver.quit()
+            EOF
+            echo "Waiting 1 minute before the next request..."
+            sleep 60  # Wait 1 minute before the next request
+          done
