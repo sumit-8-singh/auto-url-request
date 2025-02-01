@@ -35,7 +35,7 @@ jobs:
 
           for i in range(10):  # Open the URL 10 times
               driver = webdriver.Chrome(service=service, options=options)
-              driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
+              driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=177051339")
               print(f"Attempt {i+1}: Page opened successfully!")
               driver.quit()
           EOF
