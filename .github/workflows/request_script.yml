@@ -19,26 +19,26 @@ jobs:
         run: |
           pip install selenium webdriver-manager
 
-      - name: Run Selenium Script 10 Times
+      - name: Create Python Script
         run: |
-          echo "Opening the URL 10 times..."
-          for i in {1..10}; do
-            echo "Opening URL - Attempt $i"
-            python - <<EOF
-            from selenium import webdriver
-            from selenium.webdriver.chrome.service import Service
-            from webdriver_manager.chrome import ChromeDriverManager
+          cat <<EOF > open_url.py
+          from selenium import webdriver
+          from selenium.webdriver.chrome.service import Service
+          from webdriver_manager.chrome import ChromeDriverManager
 
-            options = webdriver.ChromeOptions()
-            options.add_argument("--headless")  # Run without UI
-            options.add_argument("--no-sandbox")
-            options.add_argument("--disable-dev-shm-usage")
+          options = webdriver.ChromeOptions()
+          options.add_argument("--headless")  # Run without UI
+          options.add_argument("--no-sandbox")
+          options.add_argument("--disable-dev-shm-usage")
 
-            service = Service(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=options)
-            driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
-            print("Page opened successfully!")
-            driver.quit()
-            EOF
-            echo "Finished attempt $i"
-          done
+          service = Service(ChromeDriverManager().install())
+
+          for i in range(10):  # Open the URL 10 times
+              driver = webdriver.Chrome(service=service, options=options)
+              driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
+              print(f"Attempt {i+1}: Page opened successfully!")
+              driver.quit()
+          EOF
+
+      - name: Run Selenium Script
+        run: python open_url.py
