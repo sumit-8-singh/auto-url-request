@@ -10,6 +10,6 @@ options.add_argument("--disable-dev-shm-usage")
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
-driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=130159769")
+driver.get("https://cdn.qw03.xyz/h/910001002.html?code=31WC3Q&uid=177051339")
 print("Page opened successfully!")
 driver.quit()
